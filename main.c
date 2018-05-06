@@ -7,5 +7,6 @@ int main() {
     char command[1024];
     getInput(command, 1024);
     parseCommand(command,parsedCommand);
+    printf("hello");
     return 0;
 }
