@@ -20,7 +20,7 @@ typedef struct Game{
     Cell* board;
     int* solution;
     int isSolveable;
-};
+} Game;
 
 int getGameInitParams();
 Cell* createEmptyBoard(int x, int y);
