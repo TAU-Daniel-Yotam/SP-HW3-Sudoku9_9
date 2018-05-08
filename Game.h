@@ -13,11 +13,17 @@ typedef struct Cell{
     int isFixed;
     int isPlayerMove;
 } Cell;
+#define line_len 0
+# define Block_Width 3
+# define Block_Height 3
+
+
 
 typedef struct Game{
     int blockWidth;
     int blockHeight;
     Cell* board;
+	int boardSize;
     int* solution;
     int isSolveable;
 } Game;

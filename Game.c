@@ -6,6 +6,7 @@
 # define Block_Width 3
 # define Block_Height 3
 
+
 int getGameInitParams(){
     unsigned int size=Block_Width*Block_Width*Block_Height*Block_Height;
     int hints;
