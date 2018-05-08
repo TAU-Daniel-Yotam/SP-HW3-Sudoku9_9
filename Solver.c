@@ -100,8 +100,7 @@ Cell* deteSolve(Game game) {
 
 		}
 
-	}
-	return game.board;
+	
 }
 
 int findrightmove(Game game, int x, int y, int from) {
