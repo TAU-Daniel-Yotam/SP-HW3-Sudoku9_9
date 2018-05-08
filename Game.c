@@ -19,7 +19,7 @@ int getGameInitParams(){
         printf("Please enter the number of cells to fill [0-%d]:\n",size-1);
     }
     if((gameBoard =(Cell*)calloc(size,sizeof(Cell)))==NULL){
-        printf("Error: calloc has failed\n");
+        printf("Error: getGameInitParams has failed\n");
         return 0;
     }
     /* generate a random puzzle to "solution"
@@ -32,4 +32,63 @@ Cell* createEmptyBoard(int x, int y){
 }
 int printBoard(Cell* board, int size){
     
+}
+
+int checkBlock(Game game,int x, int y, int value){
+    int k,r;
+    int boardIndex = getBoardIndex(game,x,y);
+    int blockStart;
+    int s=blockStart;
+    while(x%game.blockWidth!=0)x--;
+    while(y%game.blockHeight!=0)y--;
+    blockStart = getBoardIndex(game,x,y);
+    for(k=0;k<game.blockHeight;k++){
+        for(r=0;r<game.blockWidth;r++){
+            if(game.board[s].value==value && s!=boardIndex)
+                return 0;
+            blockStart++;
+        }
+        s=blockStart+game.blockWidth*game.blockHeight-1;
+    }
+    return 1;
+
+}
+
+int getBoardIndex(Game game, int x, int y){
+    return game.blockHeight*game.blockWidth*(y-1)+(x-1);
+}
+
+int checkLegal(Game game,int x, int y, int value){
+    return checkBlock(game,x,y,value)*checkRowColumn(game,x,y,value);
+}
+
+int checkRowColumn(Game game, int x, int y, int value) {
+    int index = getBoardIndex(game, x, y);
+    int  line = getBoardIndex(game, 1, y);
+    int row = getBoardIndex(game, x, 1);
+    for (line; line < line + game.blockHeight*game.blockWidth; line++) {
+        if (game.board[line].value == value) {
+            if (line != index) {
+                return 0;
+            }
+        }
+    }
+    for (row; row < game.boardSize; row+=(game.blockHeight*game.blockWidth)) {
+        if (game.board[row].value == value) {
+            if (row != index) {
+                return 0;
+
+            }
+        }
+    }
+    return 1;
+}
+
+int* position(Game game ,int index) {
+    int a[2];
+    a[1] = index % (game.blockHeight*game.blockWidth);
+    a[0] = (index - a[1]) / (game.blockHeight*game.blockWidth);
+
+
+    return a;
 }
