@@ -4,7 +4,7 @@
 
 
 int checkRowColum(Game game,int x, int y, int value){
-    return 0;
+	
 }
 
 int checkBlock(Game game,int x, int y, int value){
