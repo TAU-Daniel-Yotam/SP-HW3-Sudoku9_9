@@ -3,8 +3,8 @@
 #include "Game.h"
 
 
-int checkRowColum(Game game,int x, int y, int value){
-	
+int checkRowColumn(Game game,int x, int y, int value){
+    return 0;
 }
 
 int checkBlock(Game game,int x, int y, int value){
@@ -32,10 +32,14 @@ int getBoardIndex(Game game, int x, int y){
 }
 
 int checkLegal(Game game,int x, int y, int value){
-    return checkBlock(game,x,y,value)*checkRowColum(game,x,y,value);
+    return checkBlock(game,x,y,value)*checkRowColumn(game,x,y,value);
 }
 
-/*Pre: board is empty*/
-int randomSolve(Cell* board, int size, int seed){
+/*Pre: board is empty
+ *Post:
+ *  return = 0 if function failed, or 1 o.w
+ *  game.solution is solved*/
+int randomSolve(Game game){
 
 }
+

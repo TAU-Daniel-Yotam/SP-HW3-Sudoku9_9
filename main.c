@@ -1,8 +1,10 @@
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "Parser.h"
-/*int argc, const char * argv[]*/
-int main() {
+/*const char * argv[]*/
+int main(int argc) {
+    srand(argc);
     int parsedCommand[4]={6};
     char command[1024];
     getInput(command, 1024);
