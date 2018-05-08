@@ -84,6 +84,7 @@ int checkRowColumn(Game game, int x, int y, int value) {
     return 1;
 }
 
+/*a[0]=y, a[1]=x*/
 int* position(Game game ,int index) {
     int a[2];
     a[1] = index % (game.blockHeight*game.blockWidth);
@@ -92,3 +93,28 @@ int* position(Game game ,int index) {
 
     return a;
 }
+
+int findFirstNotFixed(Game game) {
+    int i = 0;
+    for ( ; i < game.boardSize; i++) {
+        if (game.board[i].isFixed != 1 && game.board[i].isPlayerMove != 1) {
+            return i;
+        }
+    }
+    return i;
+}
+
+int*getAllPossibleValues(Game game, int x,int y){
+    int*values = NULL;
+    int i,k=0;
+    for(i=1;i<=game.blockWidth*game.blockHeight;i++){
+        if(checkLegal(game,x,y,i)){
+            values=(int*)realloc(values,sizeof(int));
+            if(values==NULL)return NULL;
+            values[i-1]=i;
+            k++;
+        }
+    }
+    return values;
+}
+

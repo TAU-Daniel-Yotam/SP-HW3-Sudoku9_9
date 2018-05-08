@@ -2,17 +2,7 @@
 #include "Solver.h"
 #include "Game.h"
 #include <stdlib.h>
-
-
-int findFirstNotFixed(Game game) {
-	int i = 0;
-	for ( ; i < game.boardSize; i++) {
-		if (game.board[i].isFixed != 1 && game.board[i].isPlayerMove != 1) {
-            return i;
-		}
-	}
-	return i;
-}
+#include "MainAux.h"
 
 
 int detSolve(Game game) {
@@ -49,16 +39,16 @@ int detSolve(Game game) {
 }
 
 int findRightMove(Game game, int x, int y, int from) {
-	int rightmove = 0;
+	int rightMove = 0;
 	while (from <= Block_Height * Block_Width) {
 		if (checkBlock(game, x, y, from) && checkRowColumn(game, x, y, from)) {
-			rightmove = from;
+			rightMove = from;
 			break;
 		}
 		from++;
 
 	}
-		return rightmove;
+		return rightMove;
 	}
 
 
@@ -71,3 +61,9 @@ int randomSolve(Game game){
 
 }
 
+int randBackTrack(Game game, int index, int startIndex){
+    int*coordinates = position(game,index);
+    int*values = getAllPossibleValues(game,coordinates[1],coordinates[0]);
+    int size = calcSizeOfArray(values);
+
+}

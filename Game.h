@@ -46,3 +46,10 @@ int checkRowColumn(Game game, int x, int y, int value);
 
 int* position(Game game ,int index);
 
+int findFirstNotFixed(Game game);
+
+/*Pre: y,x<=game.blockWidth * blockHeight
+ *Post: ret={i|1<=i<=blockWidth * blockHeight && i is a legal value in (x,y)}*/
+int*getAllPossibleValues(Game game, int x,int y);
+
+
