@@ -8,6 +8,5 @@
 #endif /* Solver_h */
 
 int randomSolve(Game game);
-int deterministicSolve(Cell* board, int size);
-int checkLegal(Game game,int x, int y, int value);
+int detSolve(Game game);
 
