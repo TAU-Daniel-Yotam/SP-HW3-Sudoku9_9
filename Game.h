@@ -26,6 +26,7 @@ typedef struct Game{
 	int boardSize;
     int* solution;
     int isSolveable;
+	int solvable;
 } Game;
 
 int getGameInitParams();
@@ -47,6 +48,8 @@ int checkRowColumn(Game game, int x, int y, int value);
 int* position(Game game ,int index);
 
 int findFirstNotFixed(Game game);
+
+void printboard(Game game);
 
 /*Pre: y,x<=game.blockWidth * blockHeight
  *Post: ret={i|1<=i<=blockWidth * blockHeight && i is a legal value in (x,y)}*/

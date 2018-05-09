@@ -7,6 +7,7 @@
 # define Block_Height 3
 
 
+
 int getGameInitParams(){
     unsigned int size=Block_Width*Block_Width*Block_Height*Block_Height;
     int hints;
@@ -117,4 +118,82 @@ int*getAllPossibleValues(Game game, int x,int y){
     }
     return values;
 }
+void printboard(Game game) {
+	for (int i = 0; i < Block_Height*Block_Width; i++) {
+		if (!(i%Block_Height)) {
+			printf("----------------------------------\n");
+			for (int j = 0; i < Block_Height*Block_Width; j++) {
+
+				if (!(j%Block_Width)) {
+					if (!j)
+						printf(" |");
+					else
+						prinf("|");
+
+				}
+				if (game.board[getBoardIndex(game, j, i)].isFixed) {
+					printf(" .%d", game.board[getBoardIndex(game, j, i)].value);
+				}
+				else {
+
+					if (game.board[getBoardIndex(game, j, i)].value != 0) {
+						printf(" %d", game.board[getBoardIndex(game, j, i)].value);
+					}
+
+					else {
+						printf("   ", game.board[getBoardIndex(game, j, i)].value);
+
+					}
+				}
+			}
+			printf(" |\n");
+
+		}
+	}
+		printf("----------------------------------\n");
+	}
+
+int set(Game game,int x, int y, int  value) {
+
+	int index = getBoardIndex(game, x, y);
+	if (game.board[index].isFixed) {
+		printf("Error: cell is fixed\n");
+		return;
+	}
+	if (value == 0)
+		game.board[index].value = 0;
+	return 0;
+	if (game.solution[index] == value) {
+		game.board[index].value = value;
+		game.board[index].isPlayerMove = 1;
+	}
+	else if (checkBlock(game, x, y, value) && checkRowColumn(game, x, y, value)) {
+		game.board[index].value = value;
+	}
+	else {
+		printf("Error: value is invalid\n");
+	}
+	return winningBoard(game);
+
+
+}
+
+int validate(Game game) {
+	if (detSolve(game)) {
+		printf("Validation passed: board is solvable\n");
+	}
+	else {
+		printf("Validation failed: board is unsolvable\n");
+	}
+
+}
+int winningBoard(Game game) {
+	for (int i = 0;i< game.boardSize; i++) {
+		if (game.board[i].value) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
 
