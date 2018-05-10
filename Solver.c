@@ -17,6 +17,7 @@ int detSolve(Game game) {
 			indexOfgame++;
 			continue;
 
+
 		}
 		else {
 			positionXY = position(game,indexOfgame);

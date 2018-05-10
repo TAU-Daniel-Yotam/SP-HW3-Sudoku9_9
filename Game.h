@@ -24,9 +24,7 @@ typedef struct Game{
     int blockHeight;
     Cell* board;
 	int boardSize;
-    int* solution;
-    int isSolveable;
-	int solvable;
+    int* solution; 
 } Game;
 
 int getGameInitParams();

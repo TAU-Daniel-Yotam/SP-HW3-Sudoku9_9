@@ -158,17 +158,21 @@ int set(Game game,int x, int y, int  value) {
 	int index = getBoardIndex(game, x, y);
 	if (game.board[index].isFixed) {
 		printf("Error: cell is fixed\n");
-		return;
 	}
-	if (value == 0)
+	else if (value == 0) {
 		game.board[index].value = 0;
-	return 0;
-	if (game.solution[index] == value) {
+		game.board[index].isPlayerMove = 0;
+		printboard(game);
+	}
+	else if (game.solution[index] == value) {
 		game.board[index].value = value;
 		game.board[index].isPlayerMove = 1;
+		printboard(game);
 	}
 	else if (checkBlock(game, x, y, value) && checkRowColumn(game, x, y, value)) {
 		game.board[index].value = value;
+		game.board[index].isPlayerMove = 1;
+		printboard(game);
 	}
 	else {
 		printf("Error: value is invalid\n");
@@ -181,19 +185,28 @@ int set(Game game,int x, int y, int  value) {
 int validate(Game game) {
 	if (detSolve(game)) {
 		printf("Validation passed: board is solvable\n");
+		return 1;
 	}
 	else {
 		printf("Validation failed: board is unsolvable\n");
 	}
+	return 0;
 
+}
+int hint(Game * game, int x, int y) {
+	int index = getBoardIndex(game,x, y);
+	printf("Hint: set cell to %d\n", game->solution[index]);
+	return 0;
 }
 int winningBoard(Game game) {
 	for (int i = 0;i< game.boardSize; i++) {
-		if (game.board[i].value) {
+		if (!game.board[i].value) {
 			return 0;
 		}
 	}
 	return 1;
 }
+
+ 
 
 
