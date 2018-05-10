@@ -1,22 +1,15 @@
 
 #include "Solver.h"
-#include "Game.h"
 #include <stdlib.h>
 #include "MainAux.h"
+#include "Game.h"
 
 
-int detSolve(Game game) {
-	int rightMove = 0;
-	int * positionXY;
-	int indexOfgame = 0;
-	while (indexOfgame < game.boardSize) {
-		if (indexOfgame == findFirstNotFixed(game) && game.board[indexOfgame].value == Block_Height * Block_Width) {
-			return	0;
-		}
-		if (game.board[indexOfgame].isFixed || game.board[indexOfgame].isPlayerMove) {
-			indexOfgame++;
-			continue;
-
+int detSolve(Game* game){
+    int i = findFirstNotFixed(game);
+    int*newSol=duplicateSol(game);
+    return detSolveRec(game,newSol,i,i);
+}
 
 		}
 		else {
@@ -33,11 +26,9 @@ int detSolve(Game game) {
 				continue;
 			}
 
-		}
 
-	}
-	return 1;
 }
+
 
 int findRightMove(Game game, int x, int y, int from) {
 	int rightMove = 0;
@@ -62,9 +53,31 @@ int randomSolve(Game game){
 
 }
 
-int randBackTrack(Game game, int index, int startIndex){
-    int*coordinates = position(game,index);
-    int*values = getAllPossibleValues(game,coordinates[1],coordinates[0]);
-    int size = calcSizeOfArray(values);
-
+int randSolveRec(Game* game, int* solution,int start, int index, int**options){
+    int size = game->blockWidth*game->blockHeight;
+    int*pos = position(game,index);/* length(position=2 */
+    if(index == start && size)
+        return 0;
+    if(index == size*size){
+        free(game->solution);
+        game->solution=solution;
+        return 1;
+    }
+    if(game->board[index].isFixed || game->board[index].isPlayerMove)
+        return randSolveRec(game, solution, start, index+1,options);
+    int*values = getAllPossibleValues(game,options[index],pos[0],pos[1]);
+    if(values==NULL){
+        options[index]=NULL;
+        return randSolveRec(game,solution,start,index-1,options);/*יש פה מעגל!!!!!!*/
+    }
+    if(values!={0}){
+        int valuesSize = sizeof(values)/ sizeof(int);
+        int optionsSize = sizeof(options[index])/ sizeof(int);
+        int i = rand()%valuesSize;
+        options[index] = realloc(options[index],(optionsSize+1)* sizeof(int));/* check if realloc succeeded*/
+        options[index][optionsSize] = values[i];
+        solution[index]=values[i];
+        return randSolveRec(game, solution, start, index+1,options);
+    }
+    return -1;
 }

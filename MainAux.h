@@ -2,6 +2,7 @@
 
 #ifndef MainAux_h
 #define MainAux_h
+#include "Game.h"
 
 #include <stdio.h>
 
@@ -11,3 +12,5 @@
  * Post: 1<=ret<=bound*/
 int getRandomInt(int bound);
 int calcSizeOfArray(int*a);
+void printboard(Game game);
+int dealloc(Game* game);

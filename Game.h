@@ -29,28 +29,24 @@ typedef struct Game{
 
 int getGameInitParams();
 
-Cell* createEmptyBoard(int x, int y);
-
 int printBoard(Cell* board, int size);
 
 int generatePuzzle(Cell* board, int size);
 
-int checkBlock(Game game,int x, int y, int value);
+int checkBlock(Game* game,int x, int y, int value);
 
-int getBoardIndex(Game game, int x, int y);
+int getBoardIndex(Game* game, int x, int y);
 
-int checkLegal(Game game,int x, int y, int value);
+int checkLegal(Game* game,int x, int y, int value);
 
-int checkRowColumn(Game game, int x, int y, int value);
+int checkRowColumn(Game *game, int x, int y, int value);
 
-int* position(Game game ,int index);
+int* position(Game* game ,int index);
 
-int findFirstNotFixed(Game game);
-
-void printboard(Game game);
+int findFirstNotFixed(Game* game);
 
 /*Pre: y,x<=game.blockWidth * blockHeight
  *Post: ret={i|1<=i<=blockWidth * blockHeight && i is a legal value in (x,y)}*/
-int*getAllPossibleValues(Game game, int x,int y);
+int*getAllPossibleValues(Game* game,int**pastValues, int x,int y);
 
 
