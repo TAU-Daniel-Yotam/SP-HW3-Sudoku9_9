@@ -2,18 +2,19 @@
 
 #include "Game.h"
 #include "Solver.h"
+#include "MainAux.h"
 #include <stdlib.h>
-# define Block_Width 3
-# define Block_Height 3
 
 
 
-int getGameInitParams(){
-    unsigned int size=Block_Width*Block_Width*Block_Height*Block_Height;
+
+Game* getGameInitParams(Game* game, int w, int h){
+    if(*game==NULL) dealloc(game);
+    unsigned int size=w*h*w*h;
     int hints;
     char c;
     Cell *gameBoard;
-    Cell *solution;
+    int *solution;
     printf("Please enter the number of cells to fill [0-%d]:\n",size-1);
     while(scanf("%d%c",&hints,&c)!=2){
         printf("Error: Invalid number of cells to fill (should be between 0 and %d)\n",size);
@@ -21,19 +22,22 @@ int getGameInitParams(){
     }
     if((gameBoard =(Cell*)calloc(size,sizeof(Cell)))==NULL){
         printf("Error: getGameInitParams has failed\n");
-        return 0;
+        return NULL;
     }
-    /* generate a random puzzle to "solution"
-     fill "gameBoard" puzzle with hints*/
+    if((solution =(int*)calloc(size,sizeof(int)))==NULL){
+        printf("Error: getGameInitParams has failed\n");
+        return NULL;
+    }
+    game->blockHeight=h;
+    game->blockWidth=w;
+    game->solution=solution;
+    game->board=gameBoard;
+    randomSolve(&game);
+    addHints(&game);
+
+    return &game;
 }
 
-
-Cell* createEmptyBoard(int x, int y){
-    
-}
-int printBoard(Cell* board, int size){
-    
-}
 
 int checkBlock(Game game,int x, int y, int value){
     int k,r;
@@ -85,7 +89,7 @@ int checkRowColumn(Game game, int x, int y, int value) {
     return 1;
 }
 
-/*a[0]=y, a[1]=x*/
+/*a[0]=x, a[1]=y*/
 int* position(Game game ,int index) {
     int a[2];
     a[1] = index % (game.blockHeight*game.blockWidth);
@@ -105,53 +109,20 @@ int findFirstNotFixed(Game game) {
     return i;
 }
 
-int*getAllPossibleValues(Game game, int x,int y){
-    int*values = NULL;
-    int i,k=0;
-    for(i=1;i<=game.blockWidth*game.blockHeight;i++){
-        if(checkLegal(game,x,y,i)){
-            values=(int*)realloc(values,sizeof(int));
-            if(values==NULL)return NULL;
-            values[i-1]=i;
+int*getAllPossibleValues(Game* game,int*pastValues, int x,int y){
+    int *values = NULL;
+    int i,k=1;
+    for(i=1;i<=game->blockWidth*game->blockHeight;i++) {
+        if (checkLegal(game, x, y, i) && !inArray(pastValues)) {
+            values = (int *) realloc(values, k * sizeof(int));
+            if (values == NULL)return {0};
+            values[k - 1] = i;
             k++;
         }
     }
     return values;
 }
-void printboard(Game game) {
-	for (int i = 0; i < Block_Height*Block_Width; i++) {
-		if (!(i%Block_Height)) {
-			printf("----------------------------------\n");
-			for (int j = 0; i < Block_Height*Block_Width; j++) {
 
-				if (!(j%Block_Width)) {
-					if (!j)
-						printf(" |");
-					else
-						prinf("|");
-
-				}
-				if (game.board[getBoardIndex(game, j, i)].isFixed) {
-					printf(" .%d", game.board[getBoardIndex(game, j, i)].value);
-				}
-				else {
-
-					if (game.board[getBoardIndex(game, j, i)].value != 0) {
-						printf(" %d", game.board[getBoardIndex(game, j, i)].value);
-					}
-
-					else {
-						printf("   ", game.board[getBoardIndex(game, j, i)].value);
-
-					}
-				}
-			}
-			printf(" |\n");
-
-		}
-	}
-		printf("----------------------------------\n");
-	}
 
 int set(Game game,int x, int y, int  value) {
 
@@ -162,7 +133,6 @@ int set(Game game,int x, int y, int  value) {
 	}
 	if (value == 0)
 		game.board[index].value = 0;
-	return 0;
 	if (game.solution[index] == value) {
 		game.board[index].value = value;
 		game.board[index].isPlayerMove = 1;
@@ -195,5 +165,12 @@ int winningBoard(Game game) {
 	}
 	return 1;
 }
+
+int exitGame(Game* game){
+    dealloc(game);
+    free(game);
+    return -1;
+}
+
 
 

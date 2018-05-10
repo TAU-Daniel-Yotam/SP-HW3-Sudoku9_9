@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "Parser.h"
 #include"game.h"
+# define Block_Width 3
+# define Block_Height 3
 
 
 /*const char * argv[]*/
