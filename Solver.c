@@ -1,4 +1,3 @@
-
 #include "Solver.h"
 #include <stdlib.h>
 #include "MainAux.h"
@@ -11,37 +10,45 @@ int detSolve(Game* game){
     return detSolveRec(game,newSol,i,i);
 }
 
-		}
-		else {
-			positionXY = position(game,indexOfgame);
-			rightMove = findRightMove(game, positionXY[1], positionXY[0], game.solution[indexOfgame] + 1);
-			if (rightMove != 0) {
-                game.solution[indexOfgame] = rightMove;
-				indexOfgame++;
-				continue;
-			}
-			else {
-				game.solution[indexOfgame] = 0;
-				indexOfgame--;
-				continue;
-			}
+int detSolveRec(Game* game,int*solution,int start, int index){
+    int size = game->blockWidth*game->blockHeight;
+    int*pos;/* length(position=2 */
+    int rightMove;
+    if(index == start && size)
+        return 0;
+    if(index == size*size){
+        free(game->solution);
+        game->solution=solution;
+        return 1;
+    }
+    if(game->board[index].isFixed || game->board[index].isPlayerMove)/*יש פה מעגל!!!!!!*/
+        return detSolveRec(game, solution, start, index+1);
+    pos = position(game,index);
+    rightMove= findRightMove(game,pos[0],pos[1],solution[index]+1);
+    if(rightMove){
+        solution[index]=rightMove;
+        return detSolveRec(game,solution,start,index+1);
+    }else{
+        solution[index]=0;
+        return detSolveRec(game,solution,start,index-1);
+    }
 
 
 }
 
 
 int findRightMove(Game game, int x, int y, int from) {
-	int rightMove = 0;
-	while (from <= Block_Height * Block_Width) {
-		if (checkBlock(game, x, y, from) && checkRowColumn(game, x, y, from)) {
-			rightMove = from;
-			break;
-		}
-		from++;
+    int rightMove = 0;
+    while (from <= Block_Height * Block_Width) {
+        if (checkBlock(game, x, y, from) && checkRowColumn(game, x, y, from)) {
+            rightMove = from;
+            break;
+        }
+        from++;
 
-	}
-		return rightMove;
-	}
+    }
+    return rightMove;
+}
 
 
 
