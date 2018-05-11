@@ -27,13 +27,17 @@ typedef struct Game{
     int* solution; 
 } Game;
 
-int getGameInitParams();
+Game* getGameInitParams(Game* game, int w, int h)
 
 int printBoard(Cell* board, int size);
+
+int set(Game game, int x, int y, int  value)
 
 int generatePuzzle(Cell* board, int size);
 
 int checkBlock(Game* game,int x, int y, int value);
+int hint(Game * game, int x, int y);
+int validate(Game game);
 
 int getBoardIndex(Game* game, int x, int y);
 

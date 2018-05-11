@@ -14,7 +14,7 @@ int getInput(char* command, int size){
     return 1;
 }
 
-int * parseCommand(char*command, int* parsedCommand){
+int  parseCommand(char*command, int* parsedCommand){
     char* word;
     int i=0;
     word=strtok(command," \t\r\n");
@@ -48,7 +48,7 @@ int * parseCommand(char*command, int* parsedCommand){
         word=strtok(NULL," \t\r\n");
         
     }
-    return parsedCommand;
+    return parsedCommand[0];
 }
 
 int parseSize(char * word){
