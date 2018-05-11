@@ -179,6 +179,7 @@ int winningBoard(Game game) {
 int exitGame(Game* game){
     dealloc(game);
     free(game);
+	"Exiting…\n"
     return -1;
 }
 
