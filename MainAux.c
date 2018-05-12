@@ -2,44 +2,48 @@
 
 #include "MainAux.h"
 #include <stdlib.h>
+#include "Game.h"
 
 
 
 void printBoard(Game* game) {
-    int i,j;
-    for (i = 1; i <= Block_Height*Block_Width; i++) {
-        if (!(i%Block_Height)) {
-            printf("----------------------------------\n");
-            for (j = 1; j <= Block_Height*Block_Width; j++) {
+	int i, j;
+	int index = 0;
+	for (i = 0; i < game->blockHeight*game->blockWidth; i++) {
+		if (!(i%game->blockHeight))
+			printf("----------------------------------\n");
+		for (j = 0; j < game->blockHeight*game->blockWidth; j++) {
 
-                if (!(j%Block_Width)) {
-                    if (!j)
-                        printf(" |");
-                    else
-                        printf("|");
+			if (!(j%game->blockWidth)) {
+				if (!j)
+					printf("|");
+				else
+					printf(" |");
+	
 
-                }
-                if (game->board[getBoardIndex(game, j, i)].isFixed) {
-                    printf(" .%d", game->board[getBoardIndex(game, j, i)].value);
-                }
-                else {
+			}
+			index = getBoardIndex(game, i + 1, j + 1);
+			if (game->board[index].isFixed) {
+				printf(" .%d", game->board[getBoardIndex(game, i + 1, j + 1)].value);
+			}
+			else {
 
-                    if (game->board[getBoardIndex(game, j, i)].value != 0) {
-                        printf(" %d", game->board[getBoardIndex(game, j, i)].value);
-                    }
+				if (game->board[getBoardIndex(game, i + 1, j + 1)].value != 0) {
+					printf("  %d", game->board[getBoardIndex(game, i + 1, j + 1)].value);
+				}
 
-                    else {
-                        printf("   ", game->board[getBoardIndex(game, j, i)].value);
+				else {
+					printf("   ", game->board[getBoardIndex(game, i + 1, j + 1)].value);
 
-                    }
-                }
-            }
-            printf(" |\n");
+				}
+			}
+		}
+		printf(" |\n");
 
-        }
-    }
-    printf("----------------------------------\n");
+	}
+	printf("----------------------------------\n");
 }
+   
 
 int dealloc(Game* game){
     free(game->solution);

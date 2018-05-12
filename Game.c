@@ -35,12 +35,11 @@ Game* getGameInitParams(Game* game, int w, int h){
     newGame.solution=solution;
     newGame.board=gameBoard;
     newGame.boardSize=size;
-    randomSolve(&newGame);
+	randomSolve(&newGame);
     addHints(&newGame,hints);
 
     return &newGame;
 }
-
 
 int getBoardIndex(Game* game, int x, int y){
     return game->blockHeight*game->blockWidth*(y-1)+(x-1);
@@ -109,9 +108,10 @@ int checkBlockSol(Game* game, int* sol, int x, int y, int value){
         for(r=0;r<game->blockWidth;r++){
             if(sol[s]==value && s!=boardIndex)
                 return 0;
-            blockStart++;
+			s++;
         }
-        s=blockStart+game->blockWidth*game->blockHeight-1;
+		blockStart = s + game->blockWidth*game->blockWidth - game->blockWidth;
+			s = blockStart;
     }
     return 1;
 }
@@ -142,8 +142,14 @@ int checkRowColumnSol(Game* game, int* sol, int x, int y, int value){
 
 /*a[0]=x, a[1]=y*/
 int position(Game* game ,int index,int*a) {
-    a[0] = index % (game->blockHeight*game->blockWidth)+1;
-    a[1] = (index - a[0]) / (game->blockHeight*game->blockWidth)+1;
+	int i = 1;
+	int line = game->blockWidth*game->blockHeight - 1;
+	while (index > line) {
+		line += game->blockWidth*game->blockHeight;
+		i += 1;
+	}
+	a[0] = index % (game->blockHeight*game->blockWidth)+1;
+	a[1] = i;
     return 0;
 }
 
@@ -165,6 +171,8 @@ int *getAllPossibleValues(Game* game,int* solution,int*pastValues, int x,int y,i
             if (values == NULL){
                 return NULL;
             }
+			if (values[0] == -1)
+				values[0]= 0;
             values[0]=k;
             values[k] = i;
             k++;
@@ -186,12 +194,10 @@ int set(Game* game,int x, int y, int  value) {
     else if (game->solution[index] == value) {
         game->board[index].value = value;
         game->board[index].isPlayerMove = 1;
-        printBoard(game);
     }
     else if (checkBlock(game, x, y, value) && checkRowColumn(game, x, y, value)) {
         game->board[index].value = value;
         game->board[index].isPlayerMove = 1;
-        printBoard(game);
     }
     else {
         printf("Error: value is invalid\n");
@@ -240,7 +246,7 @@ int* duplicateSol(Game*game){
     int*sol = calloc((unsigned int)game->boardSize,sizeof(int));
     if(sol==NULL) return NULL;
     for(i=0;i<game->boardSize;i++){
-        sol[i]=game->solution[i];
+		sol[i] = game->board[i].value;
     }
     return sol;
 }

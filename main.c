@@ -4,8 +4,8 @@
 #include "Parser.h"
 #include "MainAux.h"
 #include"Game.h"
-# define Block_Width 2
-# define Block_Height 2
+# define Block_Width 3
+# define Block_Height 3
 
 
 /*const char * argv[]*/
@@ -16,7 +16,7 @@ int main(int argc,char * argv[]) {
 	int counter;
 	int parsedCommand[4] = {6};
 	char command[1024];
-	Game* game;
+	Game game;
 	srand(argc);
 	exit = 0;
 	restart = 1;
@@ -24,15 +24,15 @@ int main(int argc,char * argv[]) {
 	while (!exit) {
 
 		if (restart) {
-			game=getGameInitParams(NULL, Block_Height, Block_Height);
+			game=*getGameInitParams(NULL, Block_Height, Block_Height);
 			restart = 0;
 		}
-		printBoard(game);
+		printBoard(&game);
 		getInput(command, 1024);
 		selection = parseCommand(command, parsedCommand);
 		switch (selection) {
 			case 1:
-				if (set(game, parsedCommand[1], parsedCommand[2], parsedCommand[3])) {
+				if (set(&game, parsedCommand[1], parsedCommand[2], parsedCommand[3])) {
 					counter = 1;
 					do {
 						if (counter == 1) {
@@ -47,22 +47,22 @@ int main(int argc,char * argv[]) {
 						restart = 1;
 					else {
 						exit = 1;
-						exitGame(game);
+						exitGame(&game);
 
 					}
 				}
 				break;
 			case 2:
-				hint(game, parsedCommand[1], parsedCommand[2]);
+				hint(&game, parsedCommand[1], parsedCommand[2]);
 				break;
 			case 3:
-				validate(game);
+				validate(&game);
 				break;
 			case 4:
 				restart = 1;
 				break;
 			case 5:
-				exitGame(game);
+				exitGame(&game);
 				exit = 1;
 				break;
 			default:
