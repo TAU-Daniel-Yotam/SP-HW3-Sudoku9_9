@@ -20,11 +20,11 @@ int main(int argc,char * argv[]) {
 	srand(argc);
 	exit = 0;
 	restart = 1;
-	game = getGameInitParams(NULL,Block_Width,Block_Height);
+	/*Game* game = getGameInitParams(NULL,Block_Width,Block_Height);*/
 	while (!exit) {
 
 		if (restart) {
-			getGameInitParams(game, Block_Height, Block_Height);
+			game=getGameInitParams(NULL, Block_Height, Block_Height);
 			restart = 0;
 		}
 		printBoard(game);

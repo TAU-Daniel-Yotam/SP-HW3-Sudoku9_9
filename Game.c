@@ -12,6 +12,7 @@ Game* getGameInitParams(Game* game, int w, int h){
     int size;
     int hints;
     char c;
+    Game newGame;
     Cell *gameBoard;
     int *solution;
     if(game!=NULL) dealloc(game);
@@ -29,14 +30,15 @@ Game* getGameInitParams(Game* game, int w, int h){
         printf("Error: getGameInitParams has failed\n");
         return NULL;
     }
-    game->blockHeight=h;
-    game->blockWidth=w;
-    game->solution=solution;
-    game->board=gameBoard;
-    randomSolve(game);
-    addHints(game);
+    newGame.blockHeight=h;
+    newGame.blockWidth=w;
+    newGame.solution=solution;
+    newGame.board=gameBoard;
+    newGame.boardSize=size;
+    randomSolve(&newGame);
+    addHints(&newGame,hints);
 
-    return game;
+    return &newGame;
 }
 
 
@@ -91,10 +93,10 @@ int checkRowColumn(Game* game, int x, int y, int value) {
 }
 
 /*a[0]=x, a[1]=y*/
-int* position(Game* game ,int index,int*a) {
-    a[1] = index % (game->blockHeight*game->blockWidth);
-    a[0] = (index - a[1]) / (game->blockHeight*game->blockWidth);
-    return a;
+int position(Game* game ,int index,int*a) {
+    a[0] = index % (game->blockHeight*game->blockWidth);
+    a[1] = (index - a[1]) / (game->blockHeight*game->blockWidth);
+    return 0;
 }
 
 int findFirstNotFixed(Game* game) {
@@ -110,7 +112,7 @@ int findFirstNotFixed(Game* game) {
 int *getAllPossibleValues(Game* game,int*pastValues, int x,int y,int*values){
     int i,k=1;
     for(i=1;i<=game->blockWidth*game->blockHeight;i++) {
-        if (checkLegal(game, x, y, i) && !inArray(pastValues,i)) {
+        if (checkLegal(game, x, y, i) && !inArray(pastValues,pastValues[0],i)) {
             values = (int *) realloc(values, k * sizeof(int));
             if (values == NULL){
                 return NULL;
@@ -193,4 +195,21 @@ int* duplicateSol(Game*game){
         sol[i]=game->solution[i];
     }
     return sol;
+}
+
+
+int addHints(Game*game,int hints){
+    int x,y,i,index;
+    i=0;
+    while(i<hints){
+        x=rand()%(game->blockHeight*game->blockWidth)+1;
+        y=rand()%(game->blockHeight*game->blockWidth)+1;
+        index=getBoardIndex(game,x,y);
+        if(!game->board[index].isFixed){
+            game->board[index].value=game->solution[index];
+            game->board[index].isFixed=1;
+            i++;
+        }
+    }
+    return 0;
 }

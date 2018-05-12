@@ -10,20 +10,26 @@
 # define Block_Width 3
 # define Block_Height 3
 
+#ifndef _GAMECELL_
+#define _GAMECELL_
 /*Cell struct*/
-typedef struct Cell{
+struct Cell{
     int value;
     int isFixed;
     int isPlayerMove;
-} Cell;
+};
+typedef struct Cell Cell;
 
-typedef struct Game{
+struct Game{
     int blockWidth;
     int blockHeight;
     Cell* board;
     int boardSize;
     int* solution;
-} Game;
+};
+typedef struct Game Game;
+#endif
+
 
 Game* getGameInitParams(Game* game, int w, int h);
 
@@ -41,7 +47,7 @@ int checkLegal(Game* game,int x, int y, int value);
 
 int checkRowColumn(Game *game, int x, int y, int value);
 
-int* position(Game* game ,int index,int*a);
+int position(Game* game ,int index,int*a);
 
 int findFirstNotFixed(Game* game);
 
@@ -54,4 +60,5 @@ int*getAllPossibleValues(Game* game,int*pastValues, int x,int y, int*values);
 int* duplicateSol(Game*game);
 
 int winningBoard(Game* game);
+
 
