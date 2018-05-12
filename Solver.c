@@ -3,6 +3,9 @@
 #include "MainAux.h"
 #include "Game.h"
 
+int detSolveRec(Game* game,int*solution,int start, int index, int moveDir);
+int findRightMove(Game* game, int x, int y, int from);
+int randSolveRec(Game* game, int* solution,int start, int index, int**options,int moveDir);
 
 int detSolve(Game* game){
     int i = findFirstNotFixed(game);
@@ -58,12 +61,15 @@ int findRightMove(Game* game, int x, int y, int from) {
  *  return == 0 if function failed, or 1 o.w
  *  game.solution is solved*/
 int randomSolve(Game* game){
-    int* options[game->boardSize];
     int i;
-    int*solution=calloc((unsigned int)game->boardSize, sizeof(int));
+    int** options;
+    int*solution;
+    options=calloc(game->boardSize, sizeof(int));
+    if(options==NULL) return 0;
+    solution=calloc((unsigned int)game->boardSize, sizeof(int));
     if(solution==NULL) return 0;
     for(i=0;i<game->boardSize;i++){
-        options[i]={0};
+        options[i]=(int*)calloc(1, sizeof(int*));
     }
     return randSolveRec(game,solution,0,0,options,1);
 }

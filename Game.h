@@ -21,8 +21,8 @@ typedef struct Game{
     int blockWidth;
     int blockHeight;
     Cell* board;
-	int boardSize;
-    int* solution; 
+    int boardSize;
+    int* solution;
 } Game;
 
 Game* getGameInitParams(Game* game, int w, int h);
@@ -41,7 +41,7 @@ int checkLegal(Game* game,int x, int y, int value);
 
 int checkRowColumn(Game *game, int x, int y, int value);
 
-int* position(Game* game ,int index);
+int* position(Game* game ,int index,int*a);
 
 int findFirstNotFixed(Game* game);
 
@@ -52,4 +52,6 @@ int exitGame(Game* game);
 int*getAllPossibleValues(Game* game,int*pastValues, int x,int y, int*values);
 
 int* duplicateSol(Game*game);
+
+int winningBoard(Game* game);
 

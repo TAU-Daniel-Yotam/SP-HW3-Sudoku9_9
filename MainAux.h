@@ -10,5 +10,5 @@
 
 void printBoard(Game* game);
 int dealloc(Game* game);
-int inArray(int a[],int v);
+int inArray(int a[],int size,int v);
 /*int compareArrays(int*a,int sizeA, int*b, int sizeB);*/

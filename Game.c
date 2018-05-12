@@ -9,12 +9,13 @@
 
 
 Game* getGameInitParams(Game* game, int w, int h){
-    if(game!=NULL) dealloc(game);
-    int size=w*h*w*h;
+    int size;
     int hints;
     char c;
     Cell *gameBoard;
     int *solution;
+    if(game!=NULL) dealloc(game);
+    size=w*h*w*h;
     printf("Please enter the number of cells to fill [0-%d]:\n",size-1);
     while(scanf("%d%c",&hints,&c)!=2){
         printf("Error: Invalid number of cells to fill (should be between 0 and %d)\n",size);
@@ -32,10 +33,10 @@ Game* getGameInitParams(Game* game, int w, int h){
     game->blockWidth=w;
     game->solution=solution;
     game->board=gameBoard;
-    randomSolve(&game);
-    addHints(&game);
+    randomSolve(game);
+    addHints(game);
 
-    return &game;
+    return game;
 }
 
 
@@ -90,8 +91,7 @@ int checkRowColumn(Game* game, int x, int y, int value) {
 }
 
 /*a[0]=x, a[1]=y*/
-int* position(Game* game ,int index) {
-    int a[2];
+int* position(Game* game ,int index,int*a) {
     a[1] = index % (game->blockHeight*game->blockWidth);
     a[0] = (index - a[1]) / (game->blockHeight*game->blockWidth);
     return a;
@@ -126,67 +126,69 @@ int *getAllPossibleValues(Game* game,int*pastValues, int x,int y,int*values){
 
 int set(Game* game,int x, int y, int  value) {
 
-	int index = getBoardIndex(game, x, y);
-	if (game->board[index].isFixed) {
-		printf("Error: cell is fixed\n");
-	}
-	else if (value == 0) {
-		game->board[index].value = 0;
-	}
-	else if (game->solution[index] == value) {
-		game->board[index].value = value;
-		game->board[index].isPlayerMove = 1;
-		printBoard(game);
-	}
-	else if (checkBlock(game, x, y, value) && checkRowColumn(game, x, y, value)) {
-		game->board[index].value = value;
-		game->board[index].isPlayerMove = 1;
-		printBoard(game);
-	}
-	else {
-		printf("Error: value is invalid\n");
-	}
-	return winningBoard(game);
+    int index = getBoardIndex(game, x, y);
+    if (game->board[index].isFixed) {
+        printf("Error: cell is fixed\n");
+    }
+    else if (value == 0) {
+        game->board[index].value = 0;
+    }
+    else if (game->solution[index] == value) {
+        game->board[index].value = value;
+        game->board[index].isPlayerMove = 1;
+        printBoard(game);
+    }
+    else if (checkBlock(game, x, y, value) && checkRowColumn(game, x, y, value)) {
+        game->board[index].value = value;
+        game->board[index].isPlayerMove = 1;
+        printBoard(game);
+    }
+    else {
+        printf("Error: value is invalid\n");
+    }
+    return winningBoard(game);
 
 
 }
 
 int validate(Game* game) {
-	if (detSolve(game)) {
-		printf("Validation passed: board is solvable\n");
-		return 1;
-	}
-	else {
-		printf("Validation failed: board is unsolvable\n");
-	}
-	return 0;
+    if (detSolve(game)) {
+        printf("Validation passed: board is solvable\n");
+        return 1;
+    }
+    else {
+        printf("Validation failed: board is unsolvable\n");
+    }
+    return 0;
 
 }
 int hint(Game * game, int x, int y) {
-	int index = getBoardIndex(game,x, y);
-	printf("Hint: set cell to %d\n", game->solution[index]);
-	return 0;
+    int index = getBoardIndex(game,x, y);
+    printf("Hint: set cell to %d\n", game->solution[index]);
+    return 0;
 }
+
 int winningBoard(Game* game) {
-	for (int i = 0;i< game->boardSize; i++) {
-		if (!game->board[i].value) {
-			return 0;
-		}
-	}
-	return 1;
+    int i;
+    for (i = 0;i< game->boardSize; i++) {
+        if (!game->board[i].value) {
+            return 0;
+        }
+    }
+    return 1;
 }
 
 int exitGame(Game* game){
     dealloc(game);
     free(game);
-	"Exiting...\n";
+    printf("Exiting...\n");
     return -1;
 }
 
 int* duplicateSol(Game*game){
+    int i;
     int*sol = calloc((unsigned int)game->boardSize,sizeof(int));
     if(sol==NULL) return NULL;
-    int i;
     for(i=0;i<game->boardSize;i++){
         sol[i]=game->solution[i];
     }

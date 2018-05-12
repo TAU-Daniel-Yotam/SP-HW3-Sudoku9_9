@@ -3,21 +3,24 @@
 #include <stdlib.h>
 #include "Parser.h"
 #include "MainAux.h"
-#include"game.h"
+#include"Game.h"
 # define Block_Width 3
 # define Block_Height 3
 
 
 /*const char * argv[]*/
-int main(unsigned int argc) {
-	srand(argc);
-	Game* game = getGameInitParams(NULL,Block_Width,Block_Height);
-	int exit = 0;
-	int restart = 1;
+int main(int argc,char * argv[]) {
+	int exit;
+	int restart;
 	int selection;
 	int counter;
 	int parsedCommand[4] = {6};
 	char command[1024];
+	Game* game;
+	srand(argc);
+	exit = 0;
+	restart = 1;
+	game = getGameInitParams(NULL,Block_Width,Block_Height);
 	while (!exit) {
 
 		if (restart) {

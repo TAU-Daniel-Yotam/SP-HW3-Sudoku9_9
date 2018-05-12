@@ -6,10 +6,11 @@
 
 
 void printBoard(Game* game) {
-    for (int i = 0; i < Block_Height*Block_Width; i++) {
+    int i,j;
+    for (i = 0; i < Block_Height*Block_Width; i++) {
         if (!(i%Block_Height)) {
             printf("----------------------------------\n");
-            for (int j = 0; i < Block_Height*Block_Width; j++) {
+            for (j = 0; i < Block_Height*Block_Width; j++) {
 
                 if (!(j%Block_Width)) {
                     if (!j)
@@ -43,10 +44,10 @@ void printBoard(Game* game) {
 int dealloc(Game* game){
     free(game->solution);
     free(game->board);
+    return 0;
 }
 
-int inArray(int a[],int v){
-    int size = sizeof(a)/ sizeof(int);
+int inArray(int a[],int size ,int v){
     int i;
     for(i=0;i<size;i++){
         if(v==a[i]) return 1;
