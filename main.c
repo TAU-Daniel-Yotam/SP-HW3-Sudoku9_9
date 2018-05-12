@@ -4,8 +4,8 @@
 #include "Parser.h"
 #include "MainAux.h"
 #include"Game.h"
-# define Block_Width 3
-# define Block_Height 3
+# define Block_Width 2
+# define Block_Height 2
 
 
 /*const char * argv[]*/

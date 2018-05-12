@@ -42,12 +42,20 @@ Game* getGameInitParams(Game* game, int w, int h){
 }
 
 
+int getBoardIndex(Game* game, int x, int y){
+    return game->blockHeight*game->blockWidth*(y-1)+(x-1);
+}
+
+int checkLegal(Game* game,int x, int y, int value){
+    return checkBlock(game,x,y,value)*checkRowColumn(game,x,y,value);
+}
+
 int checkBlock(Game* game,int x, int y, int value){
     int k,r;
     int boardIndex = getBoardIndex(game,x,y);
     int blockStart,s;
-    while(x%game->blockWidth!=0)x--;
-    while(y%game->blockHeight!=0)y--;
+    while(x%game->blockWidth!=1)x--;
+    while(y%game->blockHeight!=1)y--;
     blockStart = getBoardIndex(game,x,y);
     s=blockStart;
     for(k=0;k<game->blockHeight;k++){
@@ -59,30 +67,70 @@ int checkBlock(Game* game,int x, int y, int value){
         s=blockStart+game->blockWidth*game->blockHeight-1;
     }
     return 1;
-
-}
-
-int getBoardIndex(Game* game, int x, int y){
-    return game->blockHeight*game->blockWidth*(y-1)+(x-1);
-}
-
-int checkLegal(Game* game,int x, int y, int value){
-    return checkBlock(game,x,y,value)*checkRowColumn(game,x,y,value);
 }
 
 int checkRowColumn(Game* game, int x, int y, int value) {
     int index = getBoardIndex(game, x, y);
-    int  line = getBoardIndex(game, 1, y);
+    int line = getBoardIndex(game, 1, y);
+    int l=line;
     int row = getBoardIndex(game, x, 1);
-    for (line; line < line + game->blockHeight*game->blockWidth; line++) {
-        if (game->board[line].value == value) {
-            if (line != index) {
+
+    for (; l < line + game->blockHeight*game->blockWidth; l++) {
+        if (game->board[l].value == value) {
+            if (l != index) {
                 return 0;
             }
         }
     }
-    for (row; row < game->boardSize; row+=(game->blockHeight*game->blockWidth)) {
+    for (; row < game->boardSize; row+=(game->blockHeight*game->blockWidth)) {
         if (game->board[row].value == value) {
+            if (row != index) {
+                return 0;
+
+            }
+        }
+    }
+    return 1;
+}
+
+int checkLegalSol(Game* game,int*sol ,int x, int y, int value){
+    return checkBlockSol(game,sol,x,y,value)*checkRowColumnSol(game,sol,x,y,value);
+}
+
+int checkBlockSol(Game* game, int* sol, int x, int y, int value){
+    int k,r;
+    int boardIndex = getBoardIndex(game,x,y);
+    int blockStart,s;
+    while(x%game->blockWidth!=1)x--;
+    while(y%game->blockHeight!=1)y--;
+    blockStart = getBoardIndex(game,x,y);
+    s=blockStart;
+    for(k=0;k<game->blockHeight;k++){
+        for(r=0;r<game->blockWidth;r++){
+            if(sol[s]==value && s!=boardIndex)
+                return 0;
+            blockStart++;
+        }
+        s=blockStart+game->blockWidth*game->blockHeight-1;
+    }
+    return 1;
+}
+
+int checkRowColumnSol(Game* game, int* sol, int x, int y, int value){
+    int index = getBoardIndex(game, x, y);
+    int line = getBoardIndex(game, 1, y);
+    int l=line;
+    int row = getBoardIndex(game, x, 1);
+
+    for (; l < line + game->blockHeight*game->blockWidth; l++) {
+        if (sol[l] == value) {
+            if (l != index) {
+                return 0;
+            }
+        }
+    }
+    for (; row < game->boardSize; row+=(game->blockHeight*game->blockWidth)) {
+        if (sol[row] == value) {
             if (row != index) {
                 return 0;
 
@@ -94,8 +142,8 @@ int checkRowColumn(Game* game, int x, int y, int value) {
 
 /*a[0]=x, a[1]=y*/
 int position(Game* game ,int index,int*a) {
-    a[0] = index % (game->blockHeight*game->blockWidth);
-    a[1] = (index - a[1]) / (game->blockHeight*game->blockWidth);
+    a[0] = index % (game->blockHeight*game->blockWidth)+1;
+    a[1] = (index - a[0]) / (game->blockHeight*game->blockWidth)+1;
     return 0;
 }
 
@@ -109,11 +157,11 @@ int findFirstNotFixed(Game* game) {
     return i;
 }
 
-int *getAllPossibleValues(Game* game,int*pastValues, int x,int y,int*values){
+int *getAllPossibleValues(Game* game,int* solution,int*pastValues, int x,int y,int*values){
     int i,k=1;
     for(i=1;i<=game->blockWidth*game->blockHeight;i++) {
-        if (checkLegal(game, x, y, i) && !inArray(pastValues,pastValues[0],i)) {
-            values = (int *) realloc(values, k * sizeof(int));
+        if (checkLegalSol(game,solution, x, y, i) && !inArray(pastValues,pastValues[0],i)) {
+            values = (int *) realloc(values, (k+1) * sizeof(int));
             if (values == NULL){
                 return NULL;
             }

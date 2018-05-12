@@ -55,10 +55,15 @@ int exitGame(Game* game);
 
 /*Pre: y,x<=game.blockWidth * blockHeight
  *Post: ret={i|1<=i<=blockWidth * blockHeight && i is a legal value in (x,y)}*/
-int*getAllPossibleValues(Game* game,int*pastValues, int x,int y, int*values);
+int *getAllPossibleValues(Game* game,int* solution,int*pastValues, int x,int y,int*values);
 
 int* duplicateSol(Game*game);
 
 int winningBoard(Game* game);
 
+int checkLegalSol(Game* game,int*sol ,int x, int y, int value);
+
+int checkBlockSol(Game* game, int* sol, int x, int y, int value);
+
+int checkRowColumnSol(Game* game, int* sol, int x, int y, int value);
 

@@ -7,10 +7,10 @@
 
 void printBoard(Game* game) {
     int i,j;
-    for (i = 0; i < Block_Height*Block_Width; i++) {
+    for (i = 1; i <= Block_Height*Block_Width; i++) {
         if (!(i%Block_Height)) {
             printf("----------------------------------\n");
-            for (j = 0; i < Block_Height*Block_Width; j++) {
+            for (j = 1; j <= Block_Height*Block_Width; j++) {
 
                 if (!(j%Block_Width)) {
                     if (!j)
@@ -47,7 +47,7 @@ int dealloc(Game* game){
     return 0;
 }
 
-int inArray(int a[],int size ,int v){
+int inArray(int*a,int size ,int v){
     int i;
     for(i=0;i<size;i++){
         if(v==a[i]) return 1;
@@ -62,4 +62,15 @@ int compareArrays(int*a,int sizeA, int*b, int sizeB){
         if(a[i]!=b[i]) return 0;
     }
     return 1;
+}
+
+void printArray(void*a,int size){
+    int i;
+    int*x=(int*)a;
+    for(i=0;i<size;i++){
+        printf("a[%d]=%d ",i,x[i]);
+        fflush( stdout );
+    }
+    printf("\n");
+    fflush( stdout );
 }
