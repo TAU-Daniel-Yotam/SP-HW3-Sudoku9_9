@@ -7,6 +7,6 @@
 
 #endif /* Solver_h */
 
-int randomSolve(Game game);
-int detSolve(Game game);
+int randomSolve(Game* game);
+int detSolve(Game* game);
 
