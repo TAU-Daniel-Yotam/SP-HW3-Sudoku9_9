@@ -12,14 +12,11 @@ void printBoard(Game* game) {
 		if (!(i%game->blockHeight))
 			printf("----------------------------------\n");
 		for (j = 0; j < game->blockHeight*game->blockWidth; j++) {
-
 			if (!(j%game->blockWidth)) {
 				if (!j)
 					printf("|");
 				else
 					printf(" |");
-	
-
 			}
 			index = getBoardIndex(game, i + 1, j + 1);
 			if (game->board[index].isFixed) {

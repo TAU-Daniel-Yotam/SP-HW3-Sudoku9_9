@@ -66,7 +66,7 @@ int randomSolve(Game* game){
     for(i=0;i<game->boardSize;i++){
         options[i]=(int*)calloc(1, sizeof(int*));
     }
-    return randSolveRec(game,solution,0,0,options,1);
+    return randSolveRec(game,solution,0,0,options);
 }
 
 /*Pre:
@@ -76,7 +76,7 @@ int randomSolve(Game* game){
  *Post: ret==1 if solution found
  *      ret==0 if current game is unsolvable
  *      ret==-1 if a memory allocation error occurred*/
-int randSolveRec(Game* game, int* solution,int start, int index, int**options,int moveDir){
+int randSolveRec(Game* game, int* solution,int start, int index, int**options){
 	int pos[2];
     int size = game->blockWidth*game->blockHeight;
     int*values=(int*)calloc(1,sizeof(int));
@@ -90,8 +90,8 @@ int randSolveRec(Game* game, int* solution,int start, int index, int**options,in
         game->solution=solution;
         return 1;
     }
-    if(game->board[index].isFixed || game->board[index].isPlayerMove)
-        return randSolveRec(game, solution, start, index+moveDir,options,moveDir);
+    /*if(game->board[index].isFixed || game->board[index].isPlayerMove)
+        return randSolveRec(game, solution, start, index+moveDir,options,moveDir);*/
 
    /* printArray(options,game->boardSize);
     printArray(options[index],options[index][0]+1);*/
@@ -100,11 +100,13 @@ int randSolveRec(Game* game, int* solution,int start, int index, int**options,in
     /* debug
     printArray(values,values[0]+1);
     end debug*/
-    if(values[0]==-1){
+    if(values[0]==-1 && index!=start){
         free(options[index]);
         options[index]=(int*)calloc(1, sizeof(int));
+        options[index][0]=0;
 		solution[index] = 0;
-        return randSolveRec(game,solution,start,index-1,options,-1);
+		free(values);
+        return randSolveRec(game,solution,start,index-1,options);
     }
     if(values[0]==1){
         int optionsSize = options[index][0];
@@ -113,7 +115,8 @@ int randSolveRec(Game* game, int* solution,int start, int index, int**options,in
         options[index][0]+=1;
         options[index][optionsSize] = values[1];
         solution[index]=values[1];
-        return randSolveRec(game, solution, start, index+1,options,1);
+        free(values);
+        return randSolveRec(game, solution, start, index+1,options);
     }
     if(values[0]>1){
         int valuesSize = values[0];
@@ -128,7 +131,8 @@ int randSolveRec(Game* game, int* solution,int start, int index, int**options,in
         printArray(options[index],options[index][0]+1);
         printArray(solution,game->boardSize);
         end debug */
-        return randSolveRec(game, solution, start, index+1,options,1);
+        free(values);
+        return randSolveRec(game, solution, start, index+1,options);
     }
 
     return -1;

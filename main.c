@@ -30,6 +30,7 @@ int main(int argc,char * argv[]) {
 
 		if (restart) {
 			game=*getGameInitParams(NULL, &game, Block_Height, Block_Height);
+			printArray(game.solution,game.boardSize);
 			restart = 0;
 		}
 		printBoard(&game);
