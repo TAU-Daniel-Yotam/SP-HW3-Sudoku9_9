@@ -1,6 +1,7 @@
 #include "Solver.h"
 #include <stdlib.h>
 
+int deallocOptions(Game*game,int**options);
 
 int detSolve(Game* game){
     int i = findFirstNotFixed(game);
@@ -82,12 +83,19 @@ int randSolveRec(Game* game, int* solution,int start, int index, int**options){
     int*values=(int*)calloc(1,sizeof(int));
 	values[0] = -1;
     position(game,index,pos);/* length(position)==2 */
-	values = getAllPossibleValues(game, solution, options[index], pos[0], pos[1], values);
-	if (index == start && values[0]==-1)
+	/*values = getAllPossibleValues(game, solution, options[index], pos[0], pos[1], values);*/
+	if (index == start && values[0]==-1){
+        deallocOptions(game,options);
+        free(solution);
+        free(values);
         return 0;
-    if(index == size*size){
+	}
+    if(index == game->boardSize+1){
         free(game->solution);
         game->solution=solution;
+        printArray(solution,game->boardSize);
+        deallocOptions(game,options);
+        free(values);
         return 1;
     }
     /*if(game->board[index].isFixed || game->board[index].isPlayerMove)
@@ -136,4 +144,13 @@ int randSolveRec(Game* game, int* solution,int start, int index, int**options){
     }
 
     return -1;
+}
+
+int deallocOptions(Game*game,int**options){
+    int i;
+    for(i=0;i<game->boardSize;i++){
+        free(options[i]);
+    }
+    free(options);
+    return 0;
 }
