@@ -1,7 +1,5 @@
 #include "Solver.h"
 #include <stdlib.h>
-#include "MainAux.h"
-#include "Game.h"
 
 
 int detSolve(Game* game){
@@ -99,9 +97,9 @@ int randSolveRec(Game* game, int* solution,int start, int index, int**options,in
     printArray(options[index],options[index][0]+1);*/
 
     values = getAllPossibleValues(game,solution,options[index],pos[0],pos[1],values);
-    /* debug*/
-    /*printArray(values,values[0]+1);*/
-    /*end debug*/
+    /* debug
+    printArray(values,values[0]+1);
+    end debug*/
     if(values[0]==-1){
         free(options[index]);
         options[index]=(int*)calloc(1, sizeof(int));
@@ -126,10 +124,10 @@ int randSolveRec(Game* game, int* solution,int start, int index, int**options,in
         options[index][0]+=1;
         options[index][optionsSize] = values[i];
         solution[index]=values[i];
-        /* debug*/
-        /*printArray(options[index],options[index][0]+1);
+        /* debug
+        printArray(options[index],options[index][0]+1);
         printArray(solution,game->boardSize);
-        /*end debug*/
+        end debug */
         return randSolveRec(game, solution, start, index+1,options,1);
     }
 

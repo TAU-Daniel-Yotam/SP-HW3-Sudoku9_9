@@ -2,7 +2,6 @@
 
 #include "MainAux.h"
 #include <stdlib.h>
-#include "Game.h"
 
 
 
@@ -33,7 +32,7 @@ void printBoard(Game* game) {
 				}
 
 				else {
-					printf("   ", game->board[getBoardIndex(game, i + 1, j + 1)].value);
+					printf("   ");
 
 				}
 			}

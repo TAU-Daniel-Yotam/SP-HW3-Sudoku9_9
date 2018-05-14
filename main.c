@@ -1,9 +1,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "Parser.h"
 #include "MainAux.h"
-#include"Game.h"
+#include "Game.h"
 # define Block_Width 3
 # define Block_Height 3
 
@@ -14,17 +15,21 @@ int main(int argc,char * argv[]) {
 	int restart;
 	int selection;
 	int counter;
+	int argLen;
+	int arg;
 	int parsedCommand[4] = {6};
 	char command[1024];
 	Game game;
-	srand(argc);
+	argLen=parseSize(argv[argc-1]);
+	arg = parseInt(argv[argc-1],argLen);
+	srand(arg);
 	exit = 0;
 	restart = 1;
 	/*Game* game = getGameInitParams(NULL,Block_Width,Block_Height);*/
 	while (!exit) {
 
 		if (restart) {
-			game=*getGameInitParams(NULL, Block_Height, Block_Height);
+			game=*getGameInitParams(NULL, &game, Block_Height, Block_Height);
 			restart = 0;
 		}
 		printBoard(&game);

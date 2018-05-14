@@ -1,37 +1,30 @@
-
+#include "MainAux.h"
+#include "Solver.h"
+#include <stdio.h>
 
 #ifndef Game_h
 #define Game_h
 
-#include <stdio.h>
-
-#endif /* Game_h */
-
 # define Block_Width 3
 # define Block_Height 3
 
-#ifndef _GAMECELL_
-#define _GAMECELL_
 /*Cell struct*/
-struct Cell{
+typedef struct Cell{
     int value;
     int isFixed;
     int isPlayerMove;
-};
-typedef struct Cell Cell;
+}Cell;
 
-struct Game{
+typedef struct Game{
     int blockWidth;
     int blockHeight;
     Cell* board;
     int boardSize;
     int* solution;
-};
-typedef struct Game Game;
-#endif
+}Game;
 
 
-Game* getGameInitParams(Game* game, int w, int h);
+Game* getGameInitParams(Game* game, Game*newGame, int w, int h);
 
 int set(Game* game, int x, int y, int  value);
 
@@ -61,9 +54,12 @@ int* duplicateSol(Game*game);
 
 int winningBoard(Game* game);
 
-int checkLegalSol(Game* game,int*sol ,int x, int y, int value);
+int checkLegalSol(Game* game,int* sol ,int x, int y, int value);
 
 int checkBlockSol(Game* game, int* sol, int x, int y, int value);
 
 int checkRowColumnSol(Game* game, int* sol, int x, int y, int value);
 
+int addHints(Game*game,int hints);
+
+#endif

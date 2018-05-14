@@ -1,18 +1,12 @@
 
-
 #include "Game.h"
-#include "Solver.h"
-#include "MainAux.h"
 #include <stdlib.h>
 
 
-
-
-Game* getGameInitParams(Game* game, int w, int h){
+Game* getGameInitParams(Game* game, Game*newGame, int w, int h){
     int size;
     int hints;
     char c;
-    Game newGame;
     Cell *gameBoard;
     int *solution;
     if(game!=NULL) dealloc(game);
@@ -30,15 +24,15 @@ Game* getGameInitParams(Game* game, int w, int h){
         printf("Error: getGameInitParams has failed\n");
         return NULL;
     }
-    newGame.blockHeight=h;
-    newGame.blockWidth=w;
-    newGame.solution=solution;
-    newGame.board=gameBoard;
-    newGame.boardSize=size;
-	randomSolve(&newGame);
-    addHints(&newGame,hints);
+    newGame->blockHeight=h;
+    newGame->blockWidth=w;
+    newGame->solution=solution;
+    newGame->board=gameBoard;
+    newGame->boardSize=size;
+	randomSolve(newGame);
+    addHints(newGame,hints);
 
-    return &newGame;
+    return newGame;
 }
 
 int getBoardIndex(Game* game, int x, int y){
