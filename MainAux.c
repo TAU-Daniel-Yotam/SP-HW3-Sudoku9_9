@@ -48,7 +48,7 @@ int dealloc(Game* game) {
 
 int inArray(int*a, int size, int v) {
 	int i;
-	for (i = 0; i<size; i++) {
+	for (i = 1; i<size; i++) {
 		if (v == a[i]) return 1;
 	}
 	return 0;

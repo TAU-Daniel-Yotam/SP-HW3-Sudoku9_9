@@ -161,7 +161,7 @@ int *getAllPossibleValues(Game* game, int* solution, int*pastValues, int x, int 
 	if (values[0] == -1)
 		values[0] = 0;
 	for (i = 1; i <= game->blockWidth*game->blockHeight; i++) {
-		if (checkLegalSol(game, solution, x, y, i) && !inArray(pastValues, pastValues[0], i)) {
+		if (checkLegalSol(game, solution, x, y, i) && !inArray(pastValues, pastValues[0]+1, i)) {
 			values = (int *)realloc(values, (k + 1) * sizeof(int));
 			if (values == NULL) {
 				return NULL;
