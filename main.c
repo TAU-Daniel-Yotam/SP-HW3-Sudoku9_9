@@ -10,18 +10,18 @@
 
 
 /*const char * argv[]*/
-int main(int argc,char * argv[]) {
+int main(int argc, char * argv[]) {
 	int exit;
 	int restart;
 	int selection;
 	int counter;
 	int argLen;
 	int arg;
-	int parsedCommand[4] = {6};
+	int parsedCommand[4] = { 6 };
 	char command[1024];
 	Game game;
-	argLen=parseSize(argv[argc-1]);
-	arg = parseInt(argv[argc-1],argLen);
+	argLen = parseSize(argv[argc - 1]);
+	arg = parseInt(argv[argc - 1], argLen);
 	srand(arg);
 	exit = 0;
 	restart = 1;
@@ -29,50 +29,51 @@ int main(int argc,char * argv[]) {
 	while (!exit) {
 
 		if (restart) {
-			game=*getGameInitParams(NULL, &game, Block_Height, Block_Height);
+			game = *getGameInitParams(NULL, &game, Block_Height, Block_Height);
 			restart = 0;
 		}
 		printBoard(&game);
 		getInput(command, 1024);
 		selection = parseCommand(command, parsedCommand);
 		switch (selection) {
-			case 1:
-				if (set(&game, parsedCommand[1], parsedCommand[2], parsedCommand[3])) {
-					counter = 1;
-					do {
-						if (counter == 1) {
-							printf("Puzzle solved successfully\n");
-							counter = 2;
-						} else if (counter == 2)
-							printf("Error: invalid command\n");
-						getInput(command, 1024);
-						selection = parseCommand(command, parsedCommand);
-					} while (selection != 4 && selection != 5);
-					if (selection == 4)
-						restart = 1;
-					else {
-						exit = 1;
-						exitGame(&game);
-
+		case 1:
+			if (set(&game, parsedCommand[1], parsedCommand[2], parsedCommand[3])) {
+				counter = 1;
+				do {
+					if (counter == 1) {
+						printf("Puzzle solved successfully\n");
+						counter = 2;
 					}
+					else if (counter == 2)
+						printf("Error: invalid command\n");
+					getInput(command, 1024);
+					selection = parseCommand(command, parsedCommand);
+				} while (selection != 4 && selection != 5);
+				if (selection == 4)
+					restart = 1;
+				else {
+					exit = 1;
+					exitGame(&game);
+
 				}
-				break;
-			case 2:
-				hint(&game, parsedCommand[1], parsedCommand[2]);
-				break;
-			case 3:
-				validate(&game);
-				break;
-			case 4:
-				restart = 1;
-				break;
-			case 5:
-				exitGame(&game);
-				exit = 1;
-				break;
-			default:
-				printf("Error: invalid command\n");
-				break;
+			}
+			break;
+		case 2:
+			hint(&game, parsedCommand[1], parsedCommand[2]);
+			break;
+		case 3:
+			validate(&game);
+			break;
+		case 4:
+			restart = 1;
+			break;
+		case 5:
+			exitGame(&game);
+			exit = 1;
+			break;
+		default:
+			printf("Error: invalid command\n");
+			break;
 		}
 	}
 	return 0;

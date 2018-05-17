@@ -5,8 +5,7 @@
 #ifndef Game_h
 #define Game_h
 
-# define Block_Width 3
-# define Block_Height 3
+
 
 /*Cell struct*/
 typedef struct Cell{
