@@ -49,7 +49,7 @@ void printArray(void*a,int size);
  *
  * @param a  - an int array
  * @param size - the size of the array
- * @param initValue - the value to set all values of a to
+ * @param initValue - the value to set all values of 'a' to
  * @return
  */
 int initArray(int*a, int size, int initValue);
