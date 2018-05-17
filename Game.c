@@ -176,21 +176,27 @@ int *getAllPossibleValues(Game* game, int* solution, int*pastValues, int x, int 
 
 
 int set(Game* game, int x, int y, int  value) {
-
+	if(x==-1 || y==-1 || value==-1){
+		printf("Error: invalid command\n");
+		return winningBoard(game);
+	}
 	int index = getBoardIndex(game, x, y);
 	if (game->board[index].isFixed) {
 		printf("Error: cell is fixed\n");
 	}
 	else if (value == 0) {
 		game->board[index].value = 0;
+		printBoard(game);
 	}
-	else if (game->solution[index] == value) {
+	else if (game->solution[index] == value && value != -1) {
 		game->board[index].value = value;
 		game->board[index].isPlayerMove = 1;
+		printBoard(game);
 	}
-	else if (checkBlock(game, x, y, value) && checkRowColumn(game, x, y, value)) {
+	else if (checkBlock(game, x, y, value) && checkRowColumn(game, x, y, value) && value != -1) {
 		game->board[index].value = value;
 		game->board[index].isPlayerMove = 1;
+		printBoard(game);
 	}
 	else {
 		printf("Error: value is invalid\n");
@@ -212,6 +218,10 @@ int validate(Game* game) {
 
 }
 int hint(Game * game, int x, int y) {
+	if(x==-1 || y==-1) {
+		printf("Error: invalid command\n");
+		return 0;
+	}
 	int index = getBoardIndex(game, x, y);
 	printf("Hint: set cell to %d\n", game->solution[index]);
 	return 0;

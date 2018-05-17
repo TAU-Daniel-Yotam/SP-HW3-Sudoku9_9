@@ -9,30 +9,24 @@
 # define Block_Height 3
 
 
-/*const char * argv[]*/
 int main(int argc, char * argv[]) {
-	int exit;
-	int restart;
-	int selection;
-	int counter;
-	int argLen;
-	int arg;
-	int parsedCommand[4] = { 6 };
+	int exit, restart, selection, counter, argLen, arg;
+	int parsedCommand[4];
 	char command[1024];
 	Game game;
+	initArray(parsedCommand,4,-1);
 	argLen = parseSize(argv[argc - 1]);
 	arg = parseInt(argv[argc - 1], argLen);
 	srand(arg);
 	exit = 0;
 	restart = 1;
-	/*Game* game = getGameInitParams(NULL,Block_Width,Block_Height);*/
 	while (!exit) {
 
 		if (restart) {
-			game = *getGameInitParams(NULL, &game, Block_Height, Block_Height);
+			game = *getGameInitParams(NULL, &game, Block_Height, Block_Width);
+			printBoard(&game);
 			restart = 0;
 		}
-		printBoard(&game);
 		getInput(command, 1024);
 		selection = parseCommand(command, parsedCommand);
 		switch (selection) {
@@ -44,8 +38,9 @@ int main(int argc, char * argv[]) {
 						printf("Puzzle solved successfully\n");
 						counter = 2;
 					}
-					else if (counter == 2)
+					else if (counter == 2){
 						printf("Error: invalid command\n");
+					}
 					getInput(command, 1024);
 					selection = parseCommand(command, parsedCommand);
 				} while (selection != 4 && selection != 5);
@@ -75,6 +70,7 @@ int main(int argc, char * argv[]) {
 			printf("Error: invalid command\n");
 			break;
 		}
+		initArray(parsedCommand,4,-1);
 	}
 	return 0;
 }

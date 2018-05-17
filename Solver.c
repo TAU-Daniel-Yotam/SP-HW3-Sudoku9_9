@@ -103,16 +103,6 @@ int randSolveRec(Game* game, int* solution, int start, int index, int**options) 
 		free(values);
 		return 1;
 	}
-	/*if(game->board[index].isFixed || game->board[index].isPlayerMove)
-	return randSolveRec(game, solution, start, index+moveDir,options,moveDir);*/
-
-	/* printArray(options,game->boardSize);
-	printArray(options[index],options[index][0]+1);*/
-
-	/*values = getAllPossibleValues(game,solution,options[index],pos[0],pos[1],values);*/
-	/* debug
-	printArray(values,values[0]+1);
-	end debug*/
 	if (values[0] == 0 && index != start) {
 		free(options[index]);
 		options[index] = (int*)calloc(1, sizeof(int));
@@ -140,10 +130,6 @@ int randSolveRec(Game* game, int* solution, int start, int index, int**options) 
 		options[index][0] += 1;
 		options[index][optionsSize] = values[i];
 		solution[index] = values[i];
-		/* debug
-		printArray(options[index],options[index][0]+1);
-		printArray(solution,game->boardSize);
-		end debug */
 		free(values);
 		return randSolveRec(game, solution, start, index + 1, options);
 	}

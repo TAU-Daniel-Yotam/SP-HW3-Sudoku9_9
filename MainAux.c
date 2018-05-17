@@ -54,14 +54,6 @@ int inArray(int*a, int size, int v) {
 	return 0;
 }
 
-int compareArrays(int*a, int sizeA, int*b, int sizeB) {
-	int i;
-	if (sizeA != sizeB) return 0;
-	for (i = 0; i<sizeA; i++) {
-		if (a[i] != b[i]) return 0;
-	}
-	return 1;
-}
 
 void printArray(void*a, int size) {
 	int i;
@@ -72,4 +64,12 @@ void printArray(void*a, int size) {
 	}
 	printf("\n");
 	fflush(stdout);
+}
+
+int initArray(int*a, int size, int initValue){
+	int i;
+	for(i=0;i<size;i++){
+		a[i]=initValue;
+	}
+	return 0;
 }
