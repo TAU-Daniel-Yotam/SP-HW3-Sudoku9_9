@@ -6,9 +6,9 @@
 
 int getInput(char* command, int size){
     if(fgets(command,size,stdin)==NULL){
-        return 0;
+        return 1;
     }
-    return 1;
+    return 0;
 }
 
 int  parseCommand(char*command, int* parsedCommand){

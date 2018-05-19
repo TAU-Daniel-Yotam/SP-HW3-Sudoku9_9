@@ -1,5 +1,6 @@
 #include "Solver.h"
 #include <stdlib.h>
+#include <assert.h>
 
 int deallocOptions(Game*game, int**options);
 
@@ -64,11 +65,21 @@ int randomSolve(Game* game) {
 	int** options;
 	int*solution;
 	options = calloc(game->boardSize, sizeof(int*));
-	if (options == NULL) return 0;
+	if (options == NULL) {
+		printf("Error: calloc has failed\n");
+		assert(0);
+	}
 	solution = calloc((unsigned int)game->boardSize, sizeof(int));
-	if (solution == NULL) return 0;
+	if (solution == NULL) {
+		printf("Error: calloc has failed\n");
+		assert(0);
+	}
 	for (i = 0; i<game->boardSize; i++) {
 		options[i] = (int*)calloc(1, sizeof(int*));
+		if(options[i]==NULL){
+			printf("Error: calloc has failed\n");
+			assert(0);
+		}
 	}
 	return randSolveRec(game, solution, 0, 0, options);
 }
@@ -83,6 +94,10 @@ int randomSolve(Game* game) {
 int randSolveRec(Game* game, int* solution, int start, int index, int**options) {
 	int pos[2];
 	int*values = (int*)calloc(1, sizeof(int));
+	if(values==NULL){
+		printf("Error: calloc has failed\n");
+		assert(0);
+	}
 	/*values[0] = -1;*/
 	position(game, index, pos);/* length(position)==2 */
 	values = getAllPossibleValues(game, solution, options[index], pos[0], pos[1], values);
@@ -102,6 +117,10 @@ int randSolveRec(Game* game, int* solution, int start, int index, int**options) 
 	if (values[0] == 0 && index != start) {
 		free(options[index]);
 		options[index] = (int*)calloc(1, sizeof(int));
+		if(options[index]==NULL){
+			printf("Error: calloc has failed\n");
+			assert(0);
+		}
 		options[index][0] = 0;
 		solution[index] = 0;
 		free(values);
@@ -110,7 +129,10 @@ int randSolveRec(Game* game, int* solution, int start, int index, int**options) 
 	if (values[0] == 1) {
         int optionsSize = options[index][0]+1;
 		options[index] = realloc(options[index], (optionsSize + 1) * sizeof(int));
-		if (options[index] == NULL) return -1;
+		if(options[index]==NULL){
+			printf("Error: calloc has failed\n");
+			assert(0);
+		}
 		options[index][0] += 1;
 		options[index][optionsSize] = values[1];
 		solution[index] = values[1];
@@ -121,9 +143,11 @@ int randSolveRec(Game* game, int* solution, int start, int index, int**options) 
 		int valuesSize = values[0];
 		int optionsSize = options[index][0] + 1;
 		int i = rand() % valuesSize + 1;
-		printf("%d\n", i);
 		options[index] = realloc(options[index], (optionsSize + 1) * sizeof(int));
-		if (options[index] == NULL) return -1;
+		if(options[index]==NULL){
+			printf("Error: realloc has failed\n");
+			assert(0);
+		}
 		options[index][0] += 1;
 		options[index][optionsSize] = values[i];
 		solution[index] = values[i];

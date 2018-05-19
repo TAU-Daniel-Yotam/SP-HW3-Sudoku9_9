@@ -3,24 +3,27 @@
 
 
 Game* getGameInitParams(Game* game, Game*newGame, int w, int h) {
-	int size;
-	int hints;
+	int size,hints,eof;
 	char c;
 	Cell *gameBoard;
 	int *solution;
 	if (game != NULL) dealloc(game);
 	size = w * h*w*h;
 	printf("Please enter the number of cells to fill [0-%d]:\n", size - 1);
-	while (scanf("%d%c", &hints, &c) != 2) {
+	while ((eof=scanf("%d%c", &hints, &c)) != 2) {
+		if(eof==EOF) {
+			printf("Exiting...\n");
+			return NULL;
+		}
 		printf("Error: Invalid number of cells to fill (should be between 0 and %d)\n", size);
 		printf("Please enter the number of cells to fill [0-%d]:\n", size - 1);
 	}
 	if ((gameBoard = (Cell*)calloc((unsigned int)size, sizeof(Cell))) == NULL) {
-		printf("Error: getGameInitParams has failed\n");
+		printf("Error: calloc has failed\n");
 		return NULL;
 	}
 	if ((solution = (int*)calloc((unsigned int)size, sizeof(int))) == NULL) {
-		printf("Error: getGameInitParams has failed\n");
+		printf("Error: calloc has failed\n");
 		return NULL;
 	}
 	newGame->blockHeight = h;
