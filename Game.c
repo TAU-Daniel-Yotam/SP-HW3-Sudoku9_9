@@ -3,7 +3,7 @@
 
 
 Game* getGameInitParams(Game* game, Game*newGame, int w, int h) {
-	int size,hints,eof;
+	int size,hints,eof,successRandSolve;
 	char c;
 	Cell *gameBoard;
 	int *solution;
@@ -31,7 +31,8 @@ Game* getGameInitParams(Game* game, Game*newGame, int w, int h) {
 	newGame->solution = solution;
 	newGame->board = gameBoard;
 	newGame->boardSize = size;
-	randomSolve(newGame);
+	successRandSolve=randomSolve(newGame);
+	if(successRandSolve==-1) return NULL;
 	addHints(newGame, hints);
 
 	return newGame;

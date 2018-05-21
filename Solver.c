@@ -67,18 +67,18 @@ int randomSolve(Game* game) {
 	options = calloc(game->boardSize, sizeof(int*));
 	if (options == NULL) {
 		printf("Error: calloc has failed\n");
-		assert(0);
+		return -1;
 	}
 	solution = calloc((unsigned int)game->boardSize, sizeof(int));
 	if (solution == NULL) {
 		printf("Error: calloc has failed\n");
-		assert(0);
+		return -1;
 	}
 	for (i = 0; i<game->boardSize; i++) {
 		options[i] = (int*)calloc(1, sizeof(int*));
 		if(options[i]==NULL){
 			printf("Error: calloc has failed\n");
-			assert(0);
+			return -1;
 		}
 	}
 	return randSolveRec(game, solution, 0, 0, options);
@@ -96,7 +96,7 @@ int randSolveRec(Game* game, int* solution, int start, int index, int**options) 
 	int*values = (int*)calloc(1, sizeof(int));
 	if(values==NULL){
 		printf("Error: calloc has failed\n");
-		assert(0);
+		return -1;
 	}
 	/*values[0] = -1;*/
 	position(game, index, pos);/* length(position)==2 */
@@ -119,7 +119,7 @@ int randSolveRec(Game* game, int* solution, int start, int index, int**options) 
 		options[index] = (int*)calloc(1, sizeof(int));
 		if(options[index]==NULL){
 			printf("Error: calloc has failed\n");
-			assert(0);
+			return -1;
 		}
 		options[index][0] = 0;
 		solution[index] = 0;
@@ -131,7 +131,7 @@ int randSolveRec(Game* game, int* solution, int start, int index, int**options) 
 		options[index] = realloc(options[index], (optionsSize + 1) * sizeof(int));
 		if(options[index]==NULL){
 			printf("Error: calloc has failed\n");
-			assert(0);
+			return -1;
 		}
 		options[index][0] += 1;
 		options[index][optionsSize] = values[1];
@@ -146,7 +146,7 @@ int randSolveRec(Game* game, int* solution, int start, int index, int**options) 
 		options[index] = realloc(options[index], (optionsSize + 1) * sizeof(int));
 		if(options[index]==NULL){
 			printf("Error: realloc has failed\n");
-			assert(0);
+			return -1;
 		}
 		options[index][0] += 1;
 		options[index][optionsSize] = values[i];
