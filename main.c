@@ -10,10 +10,11 @@
 
 
 int main(int argc, char * argv[]) {
-	int exit, restart, selection, counter, argLen, arg;
+	int exit, restart, selection, counter, argLen, arg, eof;
 	int parsedCommand[4];
 	char command[1024];
 	Game game;
+	Game* gameP;
 	initArray(parsedCommand,4,-1);
 	argLen = parseSize(argv[argc - 1]);
 	arg = parseInt(argv[argc - 1], argLen);
@@ -23,12 +24,15 @@ int main(int argc, char * argv[]) {
 	while (!exit) {
 
 		if (restart) {
-			game = *getGameInitParams(NULL, &game, Block_Height, Block_Width);
+			gameP = getGameInitParams(NULL, &game, Block_Height, Block_Width);
+			if(gameP==NULL) return 0;
+			game=*gameP;
 			printBoard(&game);
 			restart = 0;
 		}
-		getInput(command, 1024);
-		selection = parseCommand(command, parsedCommand);
+		eof=getInput(command, 1024);
+		if(eof) selection =5;
+		else 	selection = parseCommand(command, parsedCommand);
 		switch (selection) {
 		case 1:
 			if (set(&game, parsedCommand[1], parsedCommand[2], parsedCommand[3])) {

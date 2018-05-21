@@ -39,8 +39,9 @@
 
 
 
-/**
- *
+/**@property value - the value of the cell in the game board
+ * @property isFixed - 1 if the value is given as a hint during puzzle generation, or 0 o,w
+ * @property isPlayerMove - 1 if the value was set by the user, or 0 o.w
  */
 typedef struct Cell{
     int value;
@@ -48,6 +49,13 @@ typedef struct Cell{
     int isPlayerMove;
 }Cell;
 
+/**
+ * @property blockWidth - represents the width of a single block in the game
+ * @property blockHeight - represents the height of a single block in the game
+ * @property board - an array of Cells that represents the game board
+ * @property boardSize - the size of the board array
+ * @property solution - an array that holds the solution of the game
+ */
 typedef struct Game{
     int blockWidth;
     int blockHeight;
@@ -200,12 +208,27 @@ int checkLegalSol(Game* game,int* sol ,int x, int y, int value);
  * @param x - the column of a cell
  * @param y - the row of a cell
  * @param value - the value to be checked
- * @return 1 the block that contains (x,y) doesn't contain value, or 0 o.w
+ * @return 1 if in the solution - the block that contains (x,y) doesn't contain value, or 0 o.w
  */
 int checkBlockSol(Game* game, int* sol, int x, int y, int value);
 
+/**
+ *
+ * @param game - a pointer to the current Game instance
+ * @param sol - an array that represents the solution of the generated puzzle
+ * @param x - the column of a cell
+ * @param y - the row of a cell
+ * @param value - the value to be checked
+ * @return 1 if in the solution - the row and column that contains (x,y) doesn't contain value, or 0 o.w
+ */
 int checkRowColumnSol(Game* game, int* sol, int x, int y, int value);
 
+/**
+ *
+ * @param game - a pointer to the current Game instance
+ * @param hints - the number of cells to set as fixed in the game board
+ * @return 0
+ */
 int addHints(Game*game,int hints);
 
 #endif
