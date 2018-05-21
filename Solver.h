@@ -20,7 +20,7 @@
 /**
  *
  * @param game - a pointer to the current Game instance
- * @return
+ * @return 1 if a solution was found, or 0 if board is unsolvable
  */
 int detSolve(Game* game);
 
@@ -51,9 +51,19 @@ int findRightMove(Game* game,int * solution , int x, int y, int from);
 /**
  *
  * @param game - a pointer to the current Game instance
- * @return
+ * @return 1 if game if puzzle is solved, 0 if puzzle isn't solved, -1 if memory allocation error occurred
  */
 int randomSolve(Game* game);
+
+/**
+ *
+ * @param game - a pointer to the current Game instance
+ * @param solution - a copy of game->solution
+ * @param start - the index to start solving from
+ * @param index - the current index to push a value to
+ * @param options - 2d array that remembers for each cell the values that were already tried to be pushed into it
+ * @return 1 if game if puzzle is solved, 0 if puzzle isn't solved, -1 if memory allocation error occurred
+ */
 int randSolveRec(Game* game, int* solution, int start, int index, int**options);
 
 #endif
