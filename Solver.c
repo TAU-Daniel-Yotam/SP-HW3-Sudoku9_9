@@ -99,14 +99,14 @@ int randSolveRec(Game* game, int* solution, int start, int index, int**options) 
 	if (index == game->boardSize) {
 		free(game->solution);
 		game->solution = solution;
-		printArray(solution, 81);
+
 
 		deallocOptions(game, options);
 		free(values);
 		return 1;
 	}
 	if (values[0] == 0 && index != start) {
-		printf("%d", index);
+	
 		free(options[index]);
 		options[index] = (int*)calloc(1, sizeof(int));
 		options[index][0] = 0;
@@ -115,8 +115,7 @@ int randSolveRec(Game* game, int* solution, int start, int index, int**options) 
 		return randSolveRec(game, solution, start, index - 1, options);
 	}
 	if (values[0] == 1) {
-		printf("%d",index);
-		printArray(values, values[0]+1);
+		
 
 		int optionsSize = options[index][0]+1;
 		options[index] = realloc(options[index], (optionsSize + 1) * sizeof(int));
@@ -128,13 +127,11 @@ int randSolveRec(Game* game, int* solution, int start, int index, int**options) 
 		return randSolveRec(game, solution, start, index + 1, options);
 	}
 	if (values[0]>1) {
-		printf("%d",index);
-		printArray(values, values[0]+1);
+		
 		
 		int valuesSize = values[0];
 		int optionsSize = options[index][0] + 1;
 		int i = rand() % valuesSize + 1;
-		printf("%d\n", i);
 		options[index] = realloc(options[index], (optionsSize + 1) * sizeof(int));
 		if (options[index] == NULL) return -1;
 		options[index][0] += 1;
