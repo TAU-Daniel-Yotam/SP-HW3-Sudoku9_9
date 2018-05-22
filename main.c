@@ -14,7 +14,7 @@ int main(int argc, char * argv[]) {
 	int parsedCommand[4];
 	char command[1024];
 	Game game;
-	Game* gameP;
+	Game* gameP=NULL;
 	initArray(parsedCommand,4,-1);
 	argLen = parseSize(argv[argc - 1]);
 	arg = parseInt(argv[argc - 1], argLen);
