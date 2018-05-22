@@ -13,7 +13,7 @@ int detSolve(Game* game) {
 /*Pre: moveDir == 1 if moving right, -1 if moving left */
 int detSolveRec(Game* game, int*solution, int start, int index, int moveDir) {
 	int size = game->blockWidth*game->blockHeight;
-	int pos[2];/* length(position=2 */
+	int pos[2];/* length(position)=2 */
 	int rightMove;
 	if (index < start) {
 		return 0;
@@ -56,10 +56,6 @@ int findRightMove(Game* game, int * solution, int x, int y, int from) {
 
 
 
-/*Pre: board is empty
-*Post:
-*  return == 0 if function failed, or 1 o.w
-*  game.solution is solved*/
 int randomSolve(Game* game) {
 	int i;
 	int** options;

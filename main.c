@@ -24,7 +24,11 @@ int main(int argc, char * argv[]) {
 	while (!exit) {
 
 		if (restart) {
-			gameP = getGameInitParams(NULL, &game, Block_Height, Block_Width);
+			if(gameP!=NULL){
+				gameP = getGameInitParams(gameP, &game, Block_Height, Block_Width);
+			}
+			else
+				gameP = getGameInitParams(NULL, &game, Block_Height, Block_Width);
 			if(gameP==NULL) return 0;
 			game=*gameP;
 			printBoard(&game);
