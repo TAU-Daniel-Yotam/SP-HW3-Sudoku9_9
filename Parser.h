@@ -28,7 +28,7 @@ int getInput(char* command, int size);
 /**
 * @param word- a poiner to string that contain user input.
 * @param parsedCommand- an int array :
-         parsedCommand[0]- 1=set,2=hint,3=validate,4=restart,5=exit -1=invalid command.
+         parsedCommand[0]- 1=set,2=hint,3=validate,4=restart,5=exit,6=white spaces only in input, -1=invalid command.
 		 parsedCommand[1]-the column of the cell
 		 parsedCommand[2]=the row of the cell.
 		 parsedCommand[3]=the value
