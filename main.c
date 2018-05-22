@@ -74,6 +74,8 @@ int main(int argc, char * argv[]) {
 			exitGame(&game);
 			exit = 1;
 			break;
+		case 6:/*only white spaces received as input*/
+		    break; /*do nothing*/
 		default:
 			printf("Error: invalid command\n");
 			break;

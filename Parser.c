@@ -45,6 +45,9 @@ int  parseCommand(char*command, int* parsedCommand){
         word=strtok(NULL," \t\r\n");
         
     }
+    if(i==0 && word==NULL){
+        parsedCommand[i]=6;
+    }
     return parsedCommand[0];
 }
 
