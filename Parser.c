@@ -33,7 +33,7 @@ int  parseCommand(char*command, int* parsedCommand){
                 parsedCommand[i]=5;
             }
             else{
-                parsedCommand[i]=6;
+                parsedCommand[i]=-1;
                 break;
             }
         }
