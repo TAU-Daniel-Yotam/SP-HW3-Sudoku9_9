@@ -1,23 +1,45 @@
 #include "Game.h"
+#include "Parser.h"
 #include <stdlib.h>
+#include <string.h>
 
 
 Game* getGameInitParams(Game* game, Game*newGame, int w, int h) {
-	int size,hints,eof,successRandSolve;
-	char c;
+	int size,hints,successRandSolve,inputLen,emptyInput;
+	char hintCommand[1024];
 	Cell *gameBoard;
 	int *solution;
+	char*cleanedCommand;
+	hints=-1;
+	emptyInput=0;
 	if (game != NULL) dealloc(game);
 	size = w * h*w*h;
-	printf("Please enter the number of cells to fill [0-%d]:\n", size - 1);
-	while ((eof=scanf("%d%c", &hints, &c)) != 2) {
-		if(eof==EOF) {
-			printf("Exiting...\n");
-			return NULL;
-		}
-		printf("Error: Invalid number of cells to fill (should be between 0 and %d)\n", size);
-		printf("Please enter the number of cells to fill [0-%d]:\n", size - 1);
-	}
+	do{
+	    if(!emptyInput)
+            printf("Please enter the number of cells to fill [0-%d]:\n", size - 1);
+        cleanedCommand = fgets(hintCommand,1024,stdin);
+        if(cleanedCommand == NULL) { /* if EOF */
+                printf("Exiting...\n");
+                return NULL;
+        }
+        cleanedCommand = strtok(cleanedCommand," \t\r\n");
+        if(cleanedCommand == NULL) { /* if input is only white spaces */
+            emptyInput=1;
+            continue;
+        }/*assuming input is either "exit" or an int*/
+        else if(cleanedCommand[0]=='e'){ /* if 'exit' */
+            printf("Exiting...\n");
+            return NULL;
+        }
+        else{
+            emptyInput=0;
+            inputLen=parseSize(cleanedCommand);
+            hints=parseInt(cleanedCommand,inputLen);
+        }
+        if(hints<0 || hints>size-1)
+            printf("Error: Invalid number of cells to fill (should be between 0 and %d)\n", size);
+	}while (hints<0 || hints>size-1);
+
 	if ((gameBoard = (Cell*)calloc((unsigned int)size, sizeof(Cell))) == NULL) {
 		printf("Error: calloc has failed\n");
 		return NULL;
