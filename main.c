@@ -22,7 +22,6 @@ int main(int argc, char * argv[]) {
 	exit = 0;
 	restart = 1;
 	while (!exit) {
-
 		if (restart) {
 			if(gameP!=NULL){
 				gameP = getGameInitParams(gameP, &game, Block_Height, Block_Width);
@@ -42,6 +41,14 @@ int main(int argc, char * argv[]) {
 			if (set(&game, parsedCommand[1], parsedCommand[2], parsedCommand[3])) {
 				counter = 1;
 				do {
+					if(selection==6) {
+						if((eof=getInput(command,1024))){
+							printf("Exiting...\n");
+							return 0;
+						}
+						selection = parseCommand(command,parsedCommand);
+						continue;
+					}
 					if (counter == 1) {
 						printf("Puzzle solved successfully\n");
 						counter = 2;
@@ -49,7 +56,10 @@ int main(int argc, char * argv[]) {
 					else if (counter == 2){
 						printf("Error: invalid command\n");
 					}
-					getInput(command, 1024);
+					if((eof=getInput(command, 1024))){
+						printf("Exiting...\n");
+						return 0;
+					}
 					selection = parseCommand(command, parsedCommand);
 				} while (selection != 4 && selection != 5);
 				if (selection == 4)

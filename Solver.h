@@ -29,12 +29,10 @@ int detSolve(Game* game);
  * @param game - a pointer to the current Game instance
  * @param solution - a copy of the board that the function will solve the puzzle with. If a solution is found
  *                   the function will replace the game's solution with this copy
- * @param start - an index to start the backtracking algorithm from
- * @param index - an index to the current location of the algorithm on the board
- * @param moveDir - 1 if the algorithm is moving forward, or (-1) if moving backward
+ * @param index - an index of the current location of the algorithm on the board
  * @return 1 if a solution was found, or 0 if board is unsolvable
  */
-int detSolveRec(Game* game, int*solution, int start, int index, int moveDir);
+int detSolveRec(Game* game, int*solution, int index);
 
 /**
  *

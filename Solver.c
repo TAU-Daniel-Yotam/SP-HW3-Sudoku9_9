@@ -7,37 +7,36 @@ int deallocOptions(Game*game, int**options);
 int detSolve(Game* game) {
 	int i = findFirstNotFixed(game);
 	int*newSol = duplicateSol(game);
-	return detSolveRec(game, newSol, i, i, 1);
+	return detSolveRec(game, newSol, i);
 }
 
 /*Pre: moveDir == 1 if moving right, -1 if moving left */
-int detSolveRec(Game* game, int*solution, int start, int index, int moveDir) {
-	int size = game->blockWidth*game->blockHeight;
-	int pos[2];/* length(position)=2 */
-	int rightMove;
-	if (index < start) {
-		return 0;
+int detSolveRec(Game* game, int*solution, int index) {
+    int rightMove, solved;
+    int size = game->blockWidth * game->blockHeight * game->blockWidth * game->blockHeight;
+    int pos[2];/* length(position)=2 */
+	while((game->board[index].isFixed || game->board[index].isPlayerMove) && index<size){
+		index++;
 	}
-	if (index == start && solution[index] == game->blockHeight*game->blockWidth){
-	return 0;
-}
-	if (index == size * size) {
-		free(game->solution);
-		game->solution = solution;
-		return 1;
-	}
-	if (game->board[index].isFixed || game->board[index].isPlayerMove)
-		return detSolveRec(game, solution, start, index + moveDir, moveDir);
-	position(game, index, pos);
-	rightMove = findRightMove(game, solution, pos[0], pos[1], solution[index] + 1);
-	if (rightMove) {
-		solution[index] = rightMove;
-		return detSolveRec(game, solution, start, index + 1, 1);
-	}
-	else {
-		solution[index] = 0;
-		return detSolveRec(game, solution, start, index - 1, -1);
-	}
+    solved=0;
+    position(game,index,pos);
+    if (index == size) {
+        free(game->solution);
+        game->solution = solution;
+        return 1;
+    }
+    while((rightMove=findRightMove(game,solution,pos[0],pos[1],solution[index]+1)) && !solved){
+        solution[index]=rightMove;
+        solved = detSolveRec(game,solution,index+1);
+        if(!solved) continue;
+        return solved;
+    }
+    if(!rightMove){
+        solution[index]=0;
+        return 0;
+    }
+	return 1;
+
 }
 
 
